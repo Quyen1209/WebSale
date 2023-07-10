@@ -11,11 +11,11 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-//import org.springframework.security.core.authority.AuthorityUtils;
-//import org.springframework.security.core.userdetails.User;
-//import org.springframework.security.core.userdetails.UserDetails;
-//import org.springframework.security.core.userdetails.UsernameNotFoundException;
-//import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.core.authority.AuthorityUtils;
+import org.springframework.security.core.userdetails.User;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.security.PublicKey;
@@ -28,8 +28,8 @@ public class AccountService implements IAccountService {
     private IAccountRepository repository;
     @Autowired
     private ModelMapper mapper;
-//    @Autowired
-//    private PasswordEncoder passwordEncoder;
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
     // Get list account
     @Override
@@ -46,9 +46,9 @@ public class AccountService implements IAccountService {
     // Create Account
     @Override
     public void create(AccountCreateForm form) {
-//        String hash = passwordEncoder.encode(form.getPassword());
+        String hash = passwordEncoder.encode(form.getPassword());
         Account account = mapper.map(form,Account.class);
-//        account.setPassword(hash);
+        account.setPassword(hash);
         repository.save(account);
     }
     // Update account
@@ -68,19 +68,19 @@ public class AccountService implements IAccountService {
     }
 
     // Security
-//    @Override
-//    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException
-//    {
-//        Account account = repository.findByUsername(username);
-//        if (account == null ){
-//            throw new UsernameNotFoundException(username);
-//        }
-//        return new User(
-//                account.getUsername(),
-//                account.getPassword(),
-//                AuthorityUtils.createAuthorityList(account.getRole().toString())
-//        );
-//    }
+    @Override
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException
+    {
+        Account account = repository.findByUsername(username);
+        if (account == null ){
+            throw new UsernameNotFoundException(username);
+        }
+        return new User(
+                account.getUsername(),
+                account.getPassword(),
+                AuthorityUtils.createAuthorityList(account.getRole().toString())
+        );
+    }
     // find account by username
     @Override
     public Account findByUsername(String username) {
@@ -95,8 +95,8 @@ public class AccountService implements IAccountService {
     }
 
     // change password
-//    @Override
-//    public  void changePassword(AuthChangePassword form) {
-//        repository.changePassword(form.getUsername(), passwordEncoder.encode(form.getPassword()));
-//    }
+    @Override
+    public  void changePassword(AuthChangePassword form) {
+        repository.changePassword(form.getUsername(), passwordEncoder.encode(form.getPassword()));
+    }
 }

@@ -33,8 +33,8 @@ public class AuthController {
         service.create(form);
     }
 
-//    @PutMapping("/change-password")
-//    public void changePassword(@RequestBody @Valid AuthChangePassword form) {
-//        service.changePassword(form);
-//    }
+    @PutMapping("/change-password")
+    public void changePassword(@RequestBody @Valid AuthChangePassword form) {
+        service.changePassword(form);
+    }
 }

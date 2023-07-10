@@ -7,12 +7,13 @@ import com.vti.form.AccountUpdateForm;
 import com.vti.form.AuthChangePassword;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-//import org.springframework.security.core.userdetails.UserDetails;
-//import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
 import java.util.List;
 
-public interface IAccountService {
+public interface IAccountService extends UserDetailsService {
     // Get list account
     Page<Account> findAll(Pageable pageable, AccountFilterForm form);
 
@@ -32,7 +33,7 @@ public interface IAccountService {
     boolean existsById(int id);
 
 //    // Security
-//    UserDetails loadUserByUsername(String username) throws UsernameNotFoundException;
+    UserDetails loadUserByUsername(String username) throws UsernameNotFoundException;
 
     // find account by username
     Account findByUsername(String username);
@@ -41,5 +42,5 @@ public interface IAccountService {
     void deleteAll(List<Integer> ids);
 
 //    // change password
-//    void changePassword(AuthChangePassword form);
+    void changePassword(AuthChangePassword form);
 }
